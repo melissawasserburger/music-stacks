@@ -1,12 +1,12 @@
 const express = require('express'); // Express web server framework
-const request = require('request'); // "Request" library
+const Request = require('request'); // "Request" library
 const cors = require('cors');
 const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 
 let client_id = '2f3ffec77c75497a9c5ff90334fd58b6'; // Your client id
 let client_secret = '1be221afede34b8b9b28cc50afd1a799'; // Your secret
-let redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+let redirect_uri = ''; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
@@ -77,7 +77,7 @@ app.get('/callback', function(req, res) {
       json: true
     };
 
-    request.post(authOptions, function(error, response, body) {
+    Request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
 
         let access_token = body.access_token,
@@ -90,7 +90,7 @@ app.get('/callback', function(req, res) {
         };
 
         // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
+        Request.get(options, function(error, response, body) {
           console.log(body);
         });
 
@@ -124,7 +124,7 @@ app.get('/refresh_token', function(req, res) {
     json: true
   };
 
-  request.post(authOptions, function(error, response, body) {
+  Request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       let access_token = body.access_token;
       res.send({
